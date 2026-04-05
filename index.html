@@ -291,7 +291,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
       </div>
       <div style="background:var(--sur2);border-radius:var(--rs);padding:12px 14px;margin-bottom:1rem;font-size:12px;color:var(--tx2);line-height:1.8;">
         <div style="font-weight:500;color:var(--tx);margin-bottom:6px;">補充說明</div>
-        <div>1. Gemini API 每日免費提供 500 次呼叫，足夠日常飲食記錄使用</div>
+        <div>1. 本工具使用 Gemini 3.1 Flash-Lite 模型，每日免費提供 500 次呼叫，足夠日常飲食記錄使用</div>
         <div>2. API Key 僅儲存於你的裝置本地，不會上傳至任何伺服器或洩漏個人資料；請勿將 Key 分享給他人，以免免費額度被消耗</div>
       </div>
       <button class="ob-btn" id="ob-confirm">確認，繼續填寫個人資料 →</button>
@@ -970,7 +970,7 @@ function renderProgress(){
   const ws=document.getElementById('week-stats');
   if(!we.length){ws.innerHTML='<div class="sr"><span class="sl" style="color:var(--tx3)">本週還沒有記錄</span></div>';return;}
   const days=new Set(we.map(e=>e.date)).size||1;
-  ws.innerHTML=[['記錄天數',days+'天'],['平均熱量',Math.round(we.reduce((s,e)=>s+e.calories,0)/days)+' kcal'],['平均蛋白質',Math.round(we.reduce((s,e)=>s+e.protein,0)/days)+' g']].map(([l,v])=>'<div class="sr"><span class="sl">'+l+'</span><span class="sv">'+v+'</span></div>').join('');
+  ws.innerHTML=[['記錄天數',days+' 天'],['平均熱量',Math.round(we.reduce((s,e)=>s+e.calories,0)/days)+' kcal'],['平均蛋白質',Math.round(we.reduce((s,e)=>s+e.protein,0)/days)+' g']].map(([l,v])=>'<div class="sr"><span class="sl">'+l+'</span><span class="sv">'+v+'</span></div>').join('');
 }
 
 async function genSuggest(type){
