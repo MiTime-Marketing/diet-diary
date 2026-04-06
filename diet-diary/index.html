@@ -5,9 +5,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Diet Diary</title>
+<title>Diet Diary 飲食日記｜AI 飲食記錄工具</title>
 <meta name="author" content="MiTime Marketing">
 <meta name="copyright" content="© 2026 MiTime Marketing">
+<meta name="description" content="Diet Diary 是一款 AI 飲食記錄工具，幫你用飲食日記方式記錄每日飲食與運動，搭配熱量計算、體重追蹤與營養追蹤，更有方向地管理增肌減脂目標。">
+<meta name="keywords" content="飲食日記,AI飲食記錄,熱量計算,體重追蹤,增肌減脂,營養追蹤">
+<meta property="og:title" content="Diet Diary 飲食日記｜AI 飲食記錄工具">
+<meta property="og:description" content="用 AI 輕鬆記錄每日飲食與運動，支援熱量計算、體重追蹤與營養追蹤，幫助你管理飲食、安排增肌減脂目標。">
+<meta property="og:url" content="https://tools.mitime-mkt.com/diet-diary/">
+<meta property="og:image" content="https://tools.mitime-mkt.com/diet-diary/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="Diet Diary">
+<link rel="icon" type="image/svg+xml" href="/diet-diary/favicon.svg">
+<link rel="icon" type="image/png" href="/diet-diary/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -295,10 +306,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
         <div>1. 本工具使用 Gemini 3.1 Flash-Lite 模型，每日免費提供 500 次呼叫，足夠日常飲食記錄使用</div>
         <div>2. API Key 僅儲存於你的裝置本地，不會上傳至任何伺服器或洩漏個人資料；請勿將 Key 分享給他人，以免免費額度被消耗</div>
       </div>
-      <div style="display:flex;gap:8px;position:sticky;bottom:0;background:var(--sur);padding-top:8px;padding-bottom:1.5rem;">
-        <button id="ob-skip" style="padding:10px 12px;background:transparent;border:1px solid var(--bdr);border-radius:var(--rs);font-size:12px;color:var(--tx3);cursor:pointer;font-family:inherit;white-space:nowrap;">跳過，AI 功能暫停</button>
-        <button class="ob-btn" id="ob-confirm" style="flex:1;font-size:14px;padding:10px;">確認，繼續填寫 →</button>
-      </div>
+      <button class="ob-btn" id="ob-confirm">確認，繼續填寫個人資料 →</button>
+      <button id="ob-skip" style="width:100%;margin-top:8px;padding:8px 12px;background:transparent;border:1px solid var(--bdr);border-radius:var(--rs);font-size:12px;color:var(--tx3);cursor:pointer;font-family:inherit;display:block;text-align:center;">跳過（部分 AI 功能將停用，可隨時在設定補填）</button>
     </div>
     <!-- Page 2: Settings -->
     <div id="ob-p2" class="hidden">
@@ -1248,7 +1257,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </svg></div>
     <div style="border-top:1px solid rgba(255,255,255,0.25);padding-top:10px;text-align:center;font-size:11px;color:rgba(255,255,255,0.8);">
       © 2026 MiTime Marketing. All rights reserved. &nbsp;|&nbsp;
-      <a href="https://linktr.ee/mitime.mkt" target="_blank" style="color:white;text-decoration:underline;text-underline-offset:3px;">追蹤我們</a>
+      <a href="https://linktr.ee/mitime_mkt" target="_blank" style="color:white;text-decoration:underline;text-underline-offset:3px;">追蹤我們</a>
     </div>
   </div>
 </footer>
