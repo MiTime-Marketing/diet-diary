@@ -502,7 +502,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
           <button class="abtn" id="add-btn">AI 解析</button>
         </div>
       </div>
-      <p class="input-hint">💡 建議寫清楚份量與細節，例如：雞腿便當（飯半碗）、美式咖啡無糖大杯，AI 解析會更準確</p>
+      <p class="input-hint">💡 建議寫清楚份量與細節，例如：雞腿便當（飯半碗）、美式咖啡無糖大杯（多項請用「、」或「+」分隔），AI 解析會更準確</p>
       <div class="photo-area">
         <div class="photo-btns">
           <label class="photo-btn" id="upload-label">
@@ -780,8 +780,34 @@ async function addEntry(){
   try{
     let translated=text;
     Object.entries(TW).forEach(([k,v])=>{if(translated.includes(k))translated=translated.replace(k,v+'('+k+')');});
+    // Check if input contains separators → multiple items
+    const sepRe=/[、，,＋+]/;
+    if(sepRe.test(translated)){
+      // Multiple items: ask AI to return array
+      const multiRaw=await callText('Analyze each food item separately. Input contains multiple Taiwan foods separated by punctuation: "'+translated+'". Return ONLY a JSON array, no markdown: [{"food_name":"中文名稱","calories":int,"protein":int,"fat":int,"carbs":int}, ...]. One object per food item. Accurate Taiwan portion estimates.',600,true);
+      let items=[];
+      try{
+        const clean=multiRaw.replace(/```json|```/g,'').trim();
+        const arr=JSON.parse(clean);
+        if(Array.isArray(arr))items=arr;
+        else items=[arr];
+      }catch(_){items=[];}
+      if(items.length>0){
+        // Split original text by separators to get original labels
+        const origParts=text.split(/[、，,＋+]/).map(s=>s.trim()).filter(Boolean);
+        items.forEach((item,i)=>{
+          const name=origParts[i]||item.food_name||text;
+          pushEntry({display_name:name,items:[name],calories:item.calories||0,protein:item.protein||0,fat:item.fat||0,carbs:item.carbs||0},date);
+        });
+        document.getElementById('food-input').value='';
+        setStatus('已記錄 '+items.length+' 項 ✓','ok');setTimeout(()=>setStatus('',''),3000);
+        genBanner();
+        btn.disabled=false;return;
+      }
+      // Fallback to single if parse fails
+    }
     const raw=await callText('Estimate nutrition for this Taiwan food: "'+translated+'". Return ONLY JSON: {"food_name":"中文名稱","calories":int,"protein":int,"fat":int,"carbs":int}. Accurate estimates.',300,true);
-    const p=parseNut(raw,text);p.display_name=text;p.items=[text];
+    const p=parseNut(raw,text);p.display_name=text;p.items=[text]; // keep original input as name
     pushEntry(p,date);
     document.getElementById('food-input').value='';
     setStatus('已記錄 ✓','ok');setTimeout(()=>setStatus('',''),3000);
