@@ -335,6 +335,23 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
           <div class="sf full"><label>目標體重 (kg)</label><input type="number" id="s2-goal-w" placeholder="" /></div>
         </div>
       </div>
+      <div style="margin-bottom:1rem;">
+        <div class="ssec-t">個人習慣 <span style="font-size:11px;color:var(--tx3);font-weight:400;">（選填）填寫後，AI 生成建議將以此為主要參考</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="sf full">
+            <label>平常飲食習慣</label>
+            <textarea id="s2-food-habit" placeholder="例：外食為主、少吃澱粉" rows="2" style="width:100%;padding:10px 12px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:14px;font-family:inherit;background:var(--bg);outline:none;resize:vertical;"></textarea>
+          </div>
+          <div class="sf full">
+            <label>運動習慣</label>
+            <textarea id="s2-ex-habit" placeholder="例：每週重訓 2 次、週末爬山" rows="2" style="width:100%;padding:10px 12px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:14px;font-family:inherit;background:var(--bg);outline:none;resize:vertical;"></textarea>
+          </div>
+          <div class="sf full">
+            <label>想調整的飲食及運動方向</label>
+            <textarea id="s2-goal-habit" placeholder="例：想增加蛋白質攝取、想增加更多有氧" rows="2" style="width:100%;padding:10px 12px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:14px;font-family:inherit;background:var(--bg);outline:none;resize:vertical;"></textarea>
+          </div>
+        </div>
+      </div>
       <!-- InBody -->
       <div style="margin-bottom:1.2rem;">
         <div class="ssec-t">InBody 資訊（選填）</div>
@@ -510,12 +527,13 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
     <div class="sec-t" style="margin-top:0">運動紀錄</div>
     <div class="excard">
       <div class="chips" id="ex-chips">
-        <button class="chip active" data-ex="有氧">有氧</button>
-        <button class="chip" data-ex="重訓">重訓</button>
-        <button class="chip" data-ex="爬坡">爬坡</button>
-        <button class="chip" data-ex="抱石">抱石</button>
-        <button class="chip" data-ex="走路">走路</button>
+        <button class="chip active" data-ex="走路">走路</button>
+        <button class="chip" data-ex="慢跑">慢跑</button>
+        <button class="chip" data-ex="騎腳踏車">騎腳踏車</button>
         <button class="chip" data-ex="游泳">游泳</button>
+        <button class="chip" data-ex="重訓">重訓</button>
+        <button class="chip" data-ex="有氧">有氧</button>
+        <button class="chip" data-ex="瑜伽">瑜伽</button>
         <button class="chip" data-ex="其他">其他</button>
       </div>
       <div class="drow" style="margin-bottom:8px;"><label>記錄日期</label><input type="date" id="ex-date" /></div>
@@ -591,6 +609,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
   <!-- SUGGEST -->
   <div id="pane-suggest" class="hidden">
     <div class="no-key-banner-extra" style="display:flex;background:var(--abg);border:1px solid var(--adr);border-radius:var(--r);padding:12px 14px;margin-bottom:1rem;align-items:center;justify-content:space-between;gap:10px;"><span style="font-size:13px;color:var(--tx2);">⚠️ 尚未設定 API Key，AI 功能暫時停用</span><button onclick="document.getElementById('ob-p1').classList.remove('hidden');document.getElementById('ob-p2').classList.add('hidden');document.getElementById('ob-ov').classList.remove('hidden');" style="padding:5px 12px;background:var(--orange);color:white;border:none;border-radius:20px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap;">設定 API Key</button></div>
+    <p style="font-size:12px;color:var(--tx3);margin-bottom:0.8rem;">如有個人飲食、健身習慣，可先至「設定」填寫，如近期有調整亦可隨時更新</p>
+
     <div class="aiblock">
       <div class="aihd"><div class="aititle">每日建議</div><button class="aibtn" id="btn-daily">生成建議</button></div>
       <div class="aic hidden" id="c-daily"></div>
@@ -650,9 +670,9 @@ function fmtShort(iso){const d=new Date(iso+'T00:00:00');return (d.getMonth()+1)
 function getTime(){return new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});}
 
 function calcGoals(w,a,g,bmrOvr,exDay,tdeeOvr){
-  const weight=w||62,age=a||28,gender=g||'female';
+  const weight=w||60,age=a||25,gender=g||'female';
   let bmr=bmrOvr||0;
-  if(!bmr) bmr=gender==='female'?10*weight+6.25*161-5*age-161:10*weight+6.25*161-5*age+5;
+  if(!bmr) bmr=gender==='female'?10*weight+6.25*165-5*age-161:10*weight+6.25*165-5*age+5;
   const tdee=tdeeOvr||Math.round(bmr*1.375);
   const cal=Math.round(tdee*0.80);
   const scale=cal/1346;
@@ -830,7 +850,7 @@ function renderToday(){
   w.querySelectorAll('.del').forEach(b=>b.addEventListener('click',()=>delEntry(parseInt(b.dataset.id))));
 }
 
-const MET_VALS={'有氧':7,'重訓':5,'爬坡':8,'抱石':6,'走路':4,'游泳':8};
+const MET_VALS={'走路':3.5,'慢跑':7.0,'騎腳踏車':6.0,'游泳':6.0,'重訓':5.0,'有氧':7.0,'瑜伽':3.0};
 function calcExKcal(mins,met){return Math.round(mins*met*(cfg.weight||60)/60);}
 async function addExercise(){
   const name=document.getElementById('ex-name').value.trim()||selEx;
@@ -1049,11 +1069,11 @@ function renderProgress(){
 
   const cur=weights.length?weights[weights.length-1].w:(cfg.weight||62);
   const curBf=bodyfats.length?bodyfats[bodyfats.length-1].bf:null;
-  const diff=Math.max(0,cur-(cfg.goalWeight||49)).toFixed(1);
+  const diff=Math.max(0,cur-(cfg.goalWeight||cfg.weight||60)).toFixed(1);
   const weeks=Math.ceil(diff/.4);
   const goals=getGoals();
   document.getElementById('goal-stats').innerHTML=[
-    ['目前體重',cur+' kg'],['目標體重',(cfg.goalWeight||49)+' kg'],
+    ['目前體重',cur+' kg'],['目標體重',(cfg.goalWeight||cfg.weight||60)+' kg'],
     ['還需減',diff+' kg'],['預計達成',parseFloat(diff)<=0?'已達成 🎉':'約 '+weeks+' 週（'+Math.ceil(weeks/4)+' 個月）'],
     ['目前體脂',curBf?curBf+'%':'未記錄'],['每日熱量目標',goals.cal+' kcal'],
     ['基礎代謝率',goals.bmr+' kcal'],
@@ -1072,7 +1092,9 @@ async function genSuggest(type){
   const btn=document.getElementById('btn-'+type),cEl=document.getElementById('c-'+type),pEl=document.getElementById('p-'+type);
   btn.disabled=true;btn.textContent='生成中...';cEl.classList.add('hidden');pEl.textContent='⏳ 分析中...';pEl.classList.remove('hidden');
   const goals=getGoals(),cur=weights.length?weights[weights.length-1].w:(cfg.weight||62);
-  const base='用戶：'+(cfg.age||28)+'歲女，身高'+(cfg.height||161)+'cm，體重'+cur+'kg，目標'+(cfg.goalWeight||49)+'kg，熱量目標'+goals.cal+'kcal，蛋白質目標'+goals.pro+'g，BMR '+goals.bmr+'kcal。';
+  const genderStr=cfg.gender==='male'?'男':'女';
+  const habitsStr=cfg.habits?'個人習慣：'+cfg.habits+'。':'';
+  const base='用戶：'+(cfg.age||25)+'歲'+genderStr+'，身高'+(cfg.height||165)+'cm，體重'+cur+'kg，目標'+(cfg.goalWeight||cfg.weight||60)+'kg，熱量目標'+goals.cal+'kcal，蛋白質目標'+goals.pro+'g，BMR '+goals.bmr+'kcal。'+habitsStr;
   const today=getToday();
   const d7=new Date();d7.setDate(d7.getDate()-7);
   const wa=d7.getFullYear()+'-'+String(d7.getMonth()+1).padStart(2,'0')+'-'+String(d7.getDate()).padStart(2,'0');
@@ -1106,10 +1128,11 @@ async function genSuggest(type){
     const exTypes=[...new Set(exWFd.map(e=>e.type))].join('、')||'無記錄';
     const totalBurn=exWFd.reduce((s,e)=>s+e.kcal,0);
     const nextWeekHintEx=isSunday?'今天是週日，請只給下週運動計畫。':isLateWeek?'今天是'+todayDow+'，請同時給下週運動計畫。':'今天是'+todayDow+'，只需給本週剩餘運動建議。';
-    prompt=base+'今天'+today+'（'+todayDow+'）。本週（週一'+weekStart+'至今）運動'+exDays+'天，項目：'+exTypes+'，消耗'+totalBurn+'kcal。'+nextWeekHintEx+'給運動建議：1.本週運動表現 2.需改善的地方 3.具體運動計畫（頻率、項目、強度）。條列式，繁體中文，200字內。';
+    const exSummary=exWFd.map(e=>e.name+'('+e.type+','+e.mins+'分)').join('、')||'無記錄';
+    prompt=base+'今天'+today+'（'+todayDow+'）。本週（週一'+weekStart+'至今）運動'+exDays+'天，項目：'+exSummary+'，消耗'+totalBurn+'kcal。'+nextWeekHintEx+'給運動建議：1.本週運動表現 2.需改善的地方 3.具體運動計畫（頻率、項目、強度）。條列式，繁體中文，200字內。';
   }
   else if(type==='goal'){
-    const diff=Math.max(0,cur-(cfg.goalWeight||49)).toFixed(1);
+    const diff=Math.max(0,cur-(cfg.goalWeight||cfg.weight||60)).toFixed(1);
     const weeks=Math.ceil(diff/.4);
     const targetDate=new Date();targetDate.setDate(targetDate.getDate()+weeks*7);
     const targetStr=targetDate.getFullYear()+'年'+(targetDate.getMonth()+1)+'月';
@@ -1172,6 +1195,11 @@ document.addEventListener('DOMContentLoaded',function(){
     document.getElementById('ob-p2').classList.remove('hidden');
     // pre-fill existing cfg
     const fills={age:cfg.age||'',height:cfg.height||'',weight:cfg.weight||'','goal-w':cfg.goalWeight||'',bmr:cfg.bmr||'',tdee:cfg.tdee||''};
+    // Load habits
+    if(cfg.habits){
+      const hp=cfg.habits.split('；');
+      hp.forEach(p=>{if(p.startsWith('飲食習慣：')){const el=document.getElementById('s2-food-habit');if(el)el.value=p.replace('飲食習慣：','');}else if(p.startsWith('運動習慣：')){const el=document.getElementById('s2-ex-habit');if(el)el.value=p.replace('運動習慣：','');}else if(p.startsWith('調整方向：')){const el=document.getElementById('s2-goal-habit');if(el)el.value=p.replace('調整方向：','');}});
+    }
     Object.entries(fills).forEach(([k,v])=>{const el=document.getElementById('s2-'+k);if(el&&v)el.value=v;});
     if(cfg.manualCal){const e=document.getElementById('s2-cal');if(e)e.value=cfg.calGoal;}
     if(cfg.manualPro){const e=document.getElementById('s2-pro');if(e)e.value=cfg.proGoal;}
@@ -1223,6 +1251,12 @@ document.addEventListener('DOMContentLoaded',function(){
     const tdee=parseInt(document.getElementById('s2-tdee').value)||0;
     if(a)cfg.age=a;if(h)cfg.height=h;if(w)cfg.weight=w;if(gw)cfg.goalWeight=gw;
     cfg.gender=g;cfg.bmr=bmr;cfg.tdee=tdee;
+    const fh=document.getElementById('s2-food-habit');const eh=document.getElementById('s2-ex-habit');const gh=document.getElementById('s2-goal-habit');
+    const habParts=[];
+    if(fh&&fh.value.trim())habParts.push('飲食習慣：'+fh.value.trim());
+    if(eh&&eh.value.trim())habParts.push('運動習慣：'+eh.value.trim());
+    if(gh&&gh.value.trim())habParts.push('調整方向：'+gh.value.trim());
+    if(habParts.length)cfg.habits=habParts.join('；');
     const watV=parseInt(document.getElementById('s2-water').value);
     const calV=parseInt(document.getElementById('s2-cal').value);
     const proV=parseInt(document.getElementById('s2-pro').value);
@@ -1432,4 +1466,4 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 </body>
-</html>
+</html
