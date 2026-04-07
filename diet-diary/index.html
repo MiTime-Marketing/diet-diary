@@ -730,10 +730,19 @@ async function callGemini(parts,maxT,json){
   const key=cfg.apiKey;if(!key) throw new Error('請先設定 API Key');
   const body={contents:[{parts}],generationConfig:{temperature:json?0:0.7,maxOutputTokens:maxT||500}};
   if(json) body.generationConfig.responseMimeType='application/json';
-  const r=await fetch(GURL+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error((e.error&&e.error.message)||'HTTP '+r.status);}
-  const data=await r.json();
-  return(data.candidates[0].content.parts[0].text||'').trim();
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),15000);
+  try{
+    const r=await fetch(GURL+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:controller.signal});
+    clearTimeout(timer);
+    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error((e.error&&e.error.message)||'HTTP '+r.status);}
+    const data=await r.json();
+    return(data.candidates[0].content.parts[0].text||'').trim();
+  }catch(e){
+    clearTimeout(timer);
+    if(e.name==='AbortError') throw new Error('請求逾時，請重新整理後再試一次');
+    throw e;
+  }
 }
 async function callText(p,maxT,json){return callGemini([{text:p}],maxT,json);}
 async function callWithImage(prompt,b64,mime){
@@ -758,7 +767,7 @@ async function addEntry(){
   const btn=document.getElementById('add-btn');btn.disabled=true;
 
   if(photoBase64){
-    setStatus('<span class="spin"></span>AI 辨識照片中...','');
+    setStatus('<span class="spin"></span>AI 辨識照片中⋯（因需連接伺服器，網路不穩時可能需等候一段時間）','');
     try{
       const prompt='Analyze this food image. Return ONLY JSON: {"food_name":"中文食物名稱","calories":int,"protein":int,"fat":int,"carbs":int}. Use Taiwan portion sizes. food_name should be in Traditional Chinese.';
       const raw=await callWithImage(prompt,photoBase64,photoMime);
@@ -776,7 +785,7 @@ async function addEntry(){
   }
 
   if(!text){btn.disabled=false;return;}
-  setStatus('<span class="spin"></span>AI 解析中...','');
+  setStatus('<span class="spin"></span>AI 解析中⋯（因需連接伺服器，網路不穩時可能需等候一段時間）','');
   try{
     let translated=text;
     Object.entries(TW).forEach(([k,v])=>{if(translated.includes(k))translated=translated.replace(k,v+'('+k+')');});
@@ -1116,7 +1125,7 @@ function renderProgress(){
 
 async function genSuggest(type){
   const btn=document.getElementById('btn-'+type),cEl=document.getElementById('c-'+type),pEl=document.getElementById('p-'+type);
-  btn.disabled=true;btn.textContent='生成中...';cEl.classList.add('hidden');pEl.textContent='⏳ 分析中...';pEl.classList.remove('hidden');
+  btn.disabled=true;btn.textContent='生成中...';cEl.classList.add('hidden');pEl.textContent='⏳ 分析中⋯（因需連接伺服器，網路不穩時可能需等候一段時間）';pEl.classList.remove('hidden');
   const goals=getGoals(),cur=weights.length?weights[weights.length-1].w:(cfg.weight||62);
   const genderStr=cfg.gender==='male'?'男':'女';
   const habitsStr=cfg.habits?'個人習慣：'+cfg.habits+'。':'';
