@@ -439,7 +439,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
     <button class="tab active" id="tab-today">飲食</button>
     <button class="tab" id="tab-exercise">運動</button>
     <button class="tab" id="tab-calendar">日曆</button>
-    <button class="tab" id="tab-progress">進度</button>
+    <button class="tab" id="tab-progress">目標</button>
     <button class="tab" id="tab-suggest">建議</button>
   </div>
 
@@ -1470,11 +1470,20 @@ document.addEventListener('DOMContentLoaded',function(){
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">一、工具說明</p>
       <p style="margin-bottom:1rem;">Diet Diary 飲食日記為 MiTime Marketing 製作之飲食記錄工具，提供飲食記錄、熱量計算、體重追蹤及 AI 分析等功能，供個人日常參考使用。</p>
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">二、資料儲存與隱私</p>
-      <p style="margin-bottom:1rem;">本工具所有紀錄（包含飲食、運動、體重及體脂資料）均儲存於使用者裝置本地，MiTime Marketing 不會收集、儲存或存取任何個人資料。AI 功能所使用之 API Key 亦僅存於使用者裝置，不會上傳至任何伺服器。請妥善保管您的 API Key，切勿分享予他人，以免額度遭到消耗。</p>
+      <p style="margin-bottom:0.5rem;">本工具所有紀錄（包含飲食、運動、體重及體脂資料）均儲存於使用者裝置的瀏覽器本地，MiTime Marketing 不會收集、儲存或存取任何個人資料。</p>
+      <p style="margin-bottom:0.5rem;">AI 功能所使用之 API Key 亦僅存於使用者裝置，不會上傳至任何伺服器。請妥善保管您的 API Key，切勿分享予他人，以免額度遭到消耗。</p>
+      <p style="margin-bottom:0.3rem;">為避免資料遺失，建議固定使用同一裝置及同一瀏覽器開啟本工具。以下情況可能導致資料永久消失，請特別注意：</p>
+      <ul style="margin:0 0 0.5rem 1.2rem;padding:0;line-height:2;">
+        <li>手動清除瀏覽器 Cookie 或網站資料</li>
+        <li>裝置儲存空間不足時系統自動清理</li>
+        <li>長時間未開啟頁面（部分瀏覽器會在一段時間未使用後自動清除網站資料）</li>
+      </ul>
+      <p style="margin-bottom:1rem;">目前尚未開放資料匯出或備份功能，如需保存重要數值，請自行記錄。</p>
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">三、健康免責聲明</p>
       <p style="margin-bottom:1rem;">本工具僅供個人日常飲食紀錄與參考使用，所有數值（包含但不限於熱量、營養素、BMR 及 TDEE）均為系統估算，不構成醫療或專業營養建議。如有增肌、減脂或特殊健康需求，請諮詢合格營養師或醫師，請勿以本工具取代專業醫療意見。</p>
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">四、使用限制</p>
-      <p style="margin-bottom:1rem;">本工具僅供個人非商業用途使用。使用者應自行評估相關資訊之適用性，並自負使用風險。</p>
+      <p style="margin-bottom:0.5rem;">本工具為免費提供，僅供個人非商業用途使用。使用者應自行評估相關資訊之適用性，並自負使用風險。</p>
+      <p style="margin-bottom:1rem;">如有功能建議歡迎透過「回報問題」提交，惟工具更新與維護視情況進行，恕不保證逐一回應或實作。</p>
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">五、智慧財產權</p>
       <p style="margin-bottom:1.5rem;">本工具之設計、介面、功能及相關內容均為 MiTime Marketing 之著作。未經授權，不得以任何形式複製、修改、再製或作為商業用途。</p>
       <div style="text-align:center;padding-bottom:1.5rem;">
