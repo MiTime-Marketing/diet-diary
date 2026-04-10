@@ -305,7 +305,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
     <!-- Page 1: API guide + key input -->
     <div id="ob-p1">
       <h2 style="font-size:20px;font-weight:500;margin-bottom:10px;">Diet Diary 飲食日記</h2>
-      <p class="ob-sub">用 AI 輕鬆記錄每日飲食與運動，幫助你管理飲食、達成增肌減脂目標！工具使用上（包含如何申請 API）有任何問題，都可以直接詳閱 <a href="#" id="ob-manual-link" target="_blank" style="color:var(--orange);text-decoration:underline;text-underline-offset:3px;">MiTime Diet Diary 使用手冊</a>。</p>
+      <p class="ob-sub">用 AI 輕鬆記錄每日飲食與運動，幫助你管理飲食、達成增肌減脂目標！工具使用上（包含如何申請 API）有任何問題，都可以直接詳閱 <a href="https://docs.google.com/presentation/d/1P1knmxo8lfFKBV_BbaHo3Xhn6emjLy3hKG4EangxGt0/" id="ob-manual-link" target="_blank" style="color:var(--orange);text-decoration:underline;text-underline-offset:3px;">MiTime Diet Diary 使用手冊</a>。</p>
       <p class="ob-sub">為確保紀錄不遺失，請固定使用同一裝置及瀏覽器開啟（例如：同一支手機的 Safari）。</p>
       <p class="ob-sub" style="margin-bottom:1.2rem;">使用 AI 分析功能，請填入 Gemini API Key，免費申請只需 3 分鐘，步驟請參照如下：</p>
       <div class="ob-step">
@@ -606,7 +606,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
 
     <div style="margin-top:1.2rem;padding:1rem;background:var(--cardbg);border-radius:12px;border:1px solid var(--bdr);">
       <h3 style="font-size:14px;font-weight:600;color:var(--tx);margin-bottom:4px;">資料備份</h3>
-      <p style="font-size:11px;color:var(--tx3);margin-bottom:10px;">將所有紀錄匯出為備份檔，可於其他裝置或資料遺失時匯入還原。</p>
+      <p style="font-size:11px;color:var(--tx3);margin-bottom:10px;">建議每週定期備份所有紀錄，避免資料因清除瀏覽器或裝置異常而遺失，備份檔可於其他裝置或資料遺失時匯入還原。<br><span style="font-size:10px;color:var(--tx3);opacity:0.8;">*備份檔案可於 iPhone「檔案」App、Android「下載」資料夾、電腦「下載」資料夾中找到</span></p>
       <div style="display:flex;gap:10px;">
         <button id="btn-export" style="flex:1;padding:10px;border:1px solid var(--ac);background:transparent;color:var(--ac);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">匯出備份</button>
         <button id="btn-import" style="flex:1;padding:10px;border:1px solid var(--bdr);background:transparent;color:var(--tx2);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">匯入還原</button>
@@ -681,7 +681,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);
 
 <script>
 const GURL='https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=';
-const TW={'熱美式':'hot Americano coffee black','冰美式':'iced Americano','美式':'Americano coffee black','拿鐵':'latte milk coffee','熱拿鐵':'hot latte','無糖拿鐵':'unsweetened latte','鮮奶茶':'milk tea with fresh milk','豆漿':'soy milk 250ml','無糖豆漿':'unsweetened soy milk 250ml','地瓜':'sweet potato 150g','烏龍麵':'udon noodle soup','鍋燒烏龍麵':'hot pot udon noodle with egg fishcake vegetables','茶葉蛋':'tea egg','水煮蛋':'hard boiled egg','御飯糰':'onigiri rice ball','可頌':'croissant','吐司':'toast bread','抓餅':'scallion pancake Taiwan','蔥抓餅':'scallion pancake Taiwan style','雞腿便當':'chicken leg bento box Taiwan rice','雞胸肉':'cooked chicken breast 100g','滷肉飯':'braised pork rice Taiwan','燙青菜':'blanched vegetables with oyster sauce','關東煮':'oden Japanese style','毛豆':'edamame 100g','希臘優格':'Greek yogurt plain','乾紅酒':'dry red wine 150ml','啤酒':'beer 350ml','蛋餅':'egg crepe Taiwan style','地瓜蛋餅':'sweet potato egg crepe Taiwan'};
+
 
 let cfg={},entries=[],weights=[],bodyfats=[],exercises=[],waterToday=0;
 let selMeal='早餐',selEx='走路',calYear,calMonth,calSelDate,curTab='today',isExDay=false;
@@ -880,7 +880,6 @@ async function addEntry(){
   setStatus('<span class="spin"></span>AI 解析中⋯（因需連接伺服器，網路不穩時可能需等候一段時間）','');
   try{
     let translated=text;
-    Object.entries(TW).forEach(([k,v])=>{if(translated.includes(k))translated=translated.replace(k,v+'('+k+')');});
     // Check if input contains separators → multiple items
     const sepRe=/[、，,＋+]/;
     if(sepRe.test(translated)){
@@ -1680,6 +1679,8 @@ document.addEventListener('DOMContentLoaded',function(){
 </svg></div>
     <div style="border-top:1px solid rgba(255,255,255,0.25);padding-top:10px;text-align:center;">
       <div style="font-size:11px;margin-bottom:6px;">
+        <a href="https://docs.google.com/presentation/d/1P1knmxo8lfFKBV_BbaHo3Xhn6emjLy3hKG4EangxGt0/" target="_blank" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-underline-offset:3px;font-size:11px;">使用手冊</a>
+        <span style="color:rgba(255,255,255,0.5);margin:0 4px;">｜</span>
         <button onclick="document.getElementById('tos-modal').classList.remove('hidden')" style="background:none;border:none;color:rgba(255,255,255,0.85);font-size:11px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:inherit;">服務條款</button>
         <span style="color:rgba(255,255,255,0.5);margin:0 4px;">｜</span>
         <a href="https://linktr.ee/mitime.mkt" target="_blank" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-underline-offset:3px;">追蹤我們</a>
@@ -1701,15 +1702,14 @@ document.addEventListener('DOMContentLoaded',function(){
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">一、工具說明</p>
       <p style="margin-bottom:1rem;">Diet Diary 飲食日記為 MiTime Marketing 製作之飲食記錄工具，提供飲食記錄、熱量計算、體重追蹤及 AI 分析等功能，供個人日常參考使用。</p>
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">二、資料儲存與隱私</p>
-      <p style="margin-bottom:0.5rem;">本工具所有紀錄（包含飲食、運動、體重及體脂資料）均儲存於使用者裝置的瀏覽器本地，MiTime Marketing 不會收集、儲存或存取任何個人資料。</p>
-      <p style="margin-bottom:0.5rem;">AI 功能所使用之 API Key 亦僅存於使用者裝置，不會上傳至任何伺服器。請妥善保管您的 API Key，切勿分享予他人，以免額度遭到消耗。</p>
+      <p style="margin-bottom:0.5rem;">本工具所有紀錄（包含飲食、運動、體重及體脂資料）及 API Key 均儲存於使用者裝置的瀏覽器本地，不會上傳至任何伺服器，MiTime Marketing 無法存取任何個人資料。請妥善保管您的 API Key，切勿分享予他人，以免額度遭到消耗。</p>
       <p style="margin-bottom:0.3rem;">為避免資料遺失，建議固定使用同一裝置及同一瀏覽器開啟本工具。以下情況可能導致資料永久消失，請特別注意：</p>
       <ul style="margin:0 0 0.5rem 1.2rem;padding:0;line-height:2;">
         <li>手動清除瀏覽器 Cookie 或網站資料</li>
         <li>裝置儲存空間不足時系統自動清理</li>
         <li>長時間未開啟頁面（部分瀏覽器會在一段時間未使用後自動清除網站資料）</li>
       </ul>
-      <p style="margin-bottom:1rem;">目前尚未開放資料匯出或備份功能，如需保存重要數值，請自行記錄。</p>
+      <p style="margin-bottom:1rem;">本工具提供「資料備份」功能，可將所有紀錄匯出為 JSON 檔案，由使用者自行保管。建議定期備份，以避免因上述情況導致紀錄遺失。</p>
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">三、健康免責聲明</p>
       <p style="margin-bottom:1rem;">本工具僅供個人日常飲食紀錄與參考使用，所有數值（包含但不限於熱量、營養素、BMR 及 TDEE）均為系統估算，不構成醫療或專業營養建議。如有增肌、減脂或特殊健康需求，請諮詢合格營養師或醫師，請勿以本工具取代專業醫療意見。</p>
       <p style="font-weight:500;color:var(--tx);margin-bottom:4px;">四、使用限制</p>
